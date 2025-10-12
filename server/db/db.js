@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const connectDB = async () => {
     try {
-      await mongoose.connect("mongodb://localhost:27017/social_media", {
+      await mongoose.connect(process.env.MONGODB_URL, {
       });
       console.log("MongoDB Connected Successfully!");
     } catch (error) {

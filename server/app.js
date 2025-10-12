@@ -7,7 +7,8 @@ const userRouter = require('./routes/userRouter')
 const postRouter = require('./routes/postRouter')
 
 const app = express();
-app.use(cors());
+app.use(cors(
+));
 connectDB()
 
 

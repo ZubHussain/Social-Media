@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const authMiddleware = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -9,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     
-    const decoded = jwt.verify(token, "zubairis@g@@dboy"); // Use your secret key
+    const decoded = jwt.verify(token, process.env,JWT_SECRET); // Use your secret key
     console.log("hey");
     req.user = await User.findById(decoded.id);
     if (!req.user) {
