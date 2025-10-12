@@ -15,7 +15,6 @@ connectDB()
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 app.use('/user',userRouter)
 app.use('/post',postRouter)

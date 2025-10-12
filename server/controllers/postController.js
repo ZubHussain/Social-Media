@@ -1,54 +1,82 @@
-const Post = require('../models/postModel')
-const User = require('../models/userModel')
+const Post = require('../models/postModel');
+const User = require('../models/userModel');
+const cloudinary = require('cloudinary').v2;
+const connectCloudinary  = require('../config/cloudinary');
+const fs = require('fs');
 
-const createPosts = async(req,res)=>{
-    try {
-        let {content} = req.body
-        const media = req.file ? `uploads/${req.file.filename}` : null; 
-        const userId = req.user._id
-        const newPost = await Post.create({
-            userId:userId,
-            content,
-            media
-        })
-        await User.findByIdAndUpdate(userId, {
-            $push: { posts: newPost._id },
-          });
-        res.status(201).json({ message: 'Post created successfully', post: newPost });
-    } catch (error) {
-        res
-        .status(500)
-        .json({ message: "Error signing up user", error: error.message });
+connectCloudinary(); 
+
+const createPosts = async (req, res) => {
+  try {
+    let { content } = req.body;
+    const userId = req.user._id;
+
+    let mediaUrl = null;
+
+    // ✅ Upload image to Cloudinary if file exists
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'posts', // optional folder name in Cloudinary
+        resource_type: 'auto', // allows images, videos, etc.
+      });
+
+      mediaUrl = result.secure_url;
+
+      // Optional: delete file from local uploads folder after upload
+      fs.unlinkSync(req.file.path);
     }
-}
 
+    // ✅ Create new post
+    const newPost = await Post.create({
+      userId,
+      content,
+      media: mediaUrl,
+    });
+
+    // ✅ Add post ID to user's posts array
+    await User.findByIdAndUpdate(userId, {
+      $push: { posts: newPost._id },
+    });
+
+    res
+      .status(201)
+      .json({ message: 'Post created successfully', post: newPost });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Error creating post', error: error.message });
+  }
+};
+
+// ✅ Get friends’ posts (unchanged)
 const getFriendsPosts = async (req, res) => {
-    try {
-      // Get the authenticated user
-      const currentUser = await User.findById(req.user._id).populate("followers following", "username");
-  
-      if (!currentUser) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      // Convert followers and following arrays to sets
-      const followersSet = new Set(currentUser.followers.map((user) => user._id.toString()));
-      const followingSet = new Set(currentUser.following.map((user) => user._id.toString()));
-  
-      // Find mutual friends (users who are both in followers and following)
-      const FriendsIds = currentUser.followers
-        .filter((user) => followingSet.has(user._id.toString()))
-        .map((user) => user._id);
-  
-      // Fetch posts created by mutual friends
-      const FriendsPosts = await Post.find({ userId: { $in: FriendsIds } }).populate(
-        "userId",
-        "username profilePicture"
-      );
-  
-      res.status(200).json({ posts: FriendsPosts });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  try {
+    const currentUser = await User.findById(req.user._id).populate(
+      'followers following',
+      'username'
+    );
+
+    if (!currentUser) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  };
-module.exports = {createPosts,getFriendsPosts}
+
+    const followingSet = new Set(
+      currentUser.following.map((user) => user._id.toString())
+    );
+
+    const FriendsIds = currentUser.followers
+      .filter((user) => followingSet.has(user._id.toString()))
+      .map((user) => user._id);
+
+    const FriendsPosts = await Post.find({ userId: { $in: FriendsIds } }).populate(
+      'userId',
+      'username profilePicture'
+    );
+
+    res.status(200).json({ posts: FriendsPosts });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { createPosts, getFriendsPosts };

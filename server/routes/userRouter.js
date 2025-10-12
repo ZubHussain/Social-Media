@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 const {userSignup,userLogin,getUser,followUser,unFollowUser, getFollowers,getFollowing,loggedInUserFriends,getUserProfile,searchedUser,uploadProfilePicture} = require('../controllers/userController') 
 const {authMiddleware} = require('../middleware/isLoggedIn')
-const upload = require("../config/multer");
+const multer = require('multer');
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/signup',userSignup)
 router.post('/login',userLogin)
@@ -17,7 +19,7 @@ router.get('/:userId',authMiddleware,getUserProfile)
 router.post(
   "/uploadProfilePicture",
   authMiddleware,
-  upload.single("profilePicture"),
+  upload.single("image"),
   uploadProfilePicture
 );
 
