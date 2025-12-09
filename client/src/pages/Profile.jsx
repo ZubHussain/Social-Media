@@ -17,7 +17,7 @@ const UserProfile = () => {
     // Fetch user posts from the API
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/profile", {
+        const response = await fetch("http://3.145.130.11:3000/user/profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

@@ -55,7 +55,7 @@ const TopNav = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/user/search?query=${search}`, {
+      const response = await fetch(`http://3.145.130.11:3000/user/search?query=${search}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -146,7 +146,7 @@ const CreatePostModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/post/createPosts", {
+      const response = await fetch("http://3.145.130.11:3000/post/createPosts", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -221,7 +221,7 @@ const FeaturedPosts = () => {
     const fetchFriendsPosts = async () => {
       try {
         // fetch logged In users posts
-        const userResponse = await fetch("http://localhost:3000/user/profile",{
+        const userResponse = await fetch("http://3.145.130.11:3000/user/profile",{
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -230,7 +230,7 @@ const FeaturedPosts = () => {
         
 
         // Fetch friends posts
-        const friendsResponse = await fetch("http://localhost:3000/post/friends/posts", {
+        const friendsResponse = await fetch("http://3.145.130.11:3000/post/friends/posts", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -291,7 +291,7 @@ const RightSidebar = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/friends", {
+        const response = await fetch("http://3.145.130.11:3000/user/friends", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -340,7 +340,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/profile", {
+        const response = await fetch("http://3.145.130.11:3000/user/profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

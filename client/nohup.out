@@ -1,0 +1,18 @@
+
+> client@0.0.0 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 347 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://172.31.24.170:5173/
+
+> client@0.0.0 dev
+> vite --host
+
+
+  VITE v6.2.3  ready in 332 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://172.31.24.170:5173/
