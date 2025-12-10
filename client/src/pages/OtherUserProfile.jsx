@@ -18,7 +18,7 @@ const OtherUserProfile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://3.145.130.11:3000/user/${userId}`, {
+        const response = await fetch(`http://3.145.132.212:3000/user/${userId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -30,7 +30,7 @@ const OtherUserProfile = () => {
           setUser({ ...data, posts: sortedPosts });
 
           // Check if the logged-in user is already following this user
-          const loggedInUser = await fetch("http://3.145.130.11:3000/user/profile", {
+          const loggedInUser = await fetch("http://3.145.132.212:3000/user/profile", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -53,7 +53,7 @@ const OtherUserProfile = () => {
   // Follow user
   const followUser = async () => {
     try {
-      const response = await fetch(`http://3.145.130.11:3000/user/follow/${userId}`, {
+      const response = await fetch(`http://3.145.132.212:3000/user/follow/${userId}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -75,7 +75,7 @@ const OtherUserProfile = () => {
   // Unfollow user
   const unfollowUser = async () => {
     try {
-      const response = await fetch(`http://3.145.130.11:3000/user/unFollow/${userId}`, {
+      const response = await fetch(`http://3.145.132.212:3000/user/unFollow/${userId}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -20,7 +20,7 @@ function Signup() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://3.145.130.11:3000/user/signup', {
+        const response = await fetch('http://3.145.132.212:3000/user/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
