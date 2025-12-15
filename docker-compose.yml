@@ -10,8 +10,8 @@ services:
   backend:
     container_name: backend
     build: ./server
-    env_file:
-      - ./server/.env
+    # env_file:
+    #   - ./server/.env
     ports:
       - "3000:3000"
 
